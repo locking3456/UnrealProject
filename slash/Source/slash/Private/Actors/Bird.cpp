@@ -52,6 +52,17 @@ void ABird::Move(const FInputActionValue& Value)
 	}
 }
 
+void ABird::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisValue = Value.Get<FVector2D>();
+	if (GetController()) {
+		// 축 관련 매핑을 하는 함수 마우스의 좌우 움직임 값은 X로  상하는 Y값으로 전달됨
+		// 함수는 언리얼 엔진에서 플레이어 컨트롤러의 Yaw 축(즉, 캐릭터의 좌우 회전 또는 방향)을 제어
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
+	}
+}
+
 // Called when the game starts or when spawned
 void ABird::BeginPlay()
 {
@@ -69,8 +80,8 @@ void ABird::BeginPlay()
 void ABird::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
+
 
 // Called to bind functionality to input
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -79,6 +90,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABird::Look);
 	}
 
 }

@@ -1,13 +1,6 @@
 # Visual Studio 2015 user specific files
 .vs/
-/slash/Content
-/slash/Saved
-/slash/Intermediate
-/slash/.vs
-/slash/Build
-/slash/Plugins
-*.sln
-*_BuiltData.uasset
+
 # Compiled Object files
 *.slo
 *.lo
