@@ -22,7 +22,7 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	GEngine->AddOnScreenDebugMessage(1, 60.0f, FColor::Cyan, FString("Item OnScreen Message!"));
-
+	///표시 위함
 	////
 
 	//UWorld* World = GetWorld();
