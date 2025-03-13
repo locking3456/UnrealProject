@@ -2,6 +2,7 @@
 
 
 #include "Item.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 AItem::AItem()
@@ -11,6 +12,9 @@ AItem::AItem()
 
 	itemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 	RootComponent = itemMesh;
+
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
+	Sphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +35,8 @@ void AItem::BeginPlay()
 
 	int32 AvgInt = Avg<int32>(1, 3);
 	UE_LOG(LogTemp, Warning, TEXT("Avg of 1 and 3 : %d"), AvgInt);
+
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
 	
 }
 float AItem::TransformedSin()
@@ -41,6 +47,13 @@ float AItem::TransformedSin()
 float AItem::TransformedCos()
 {
 	return amplitude * FMath::Cos(runningTime * timeConstant);
+}
+void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	const FString OtherActorName =OtherActor->GetName();
+	if (GEngine) {
+		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
+	}
 }
 // Called every frame
 void AItem::Tick(float DeltaTime)

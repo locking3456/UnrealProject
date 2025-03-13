@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GroomComponent.h"
 // Sets default values
 AslashCharacter::AslashCharacter()
 {
@@ -27,6 +28,14 @@ AslashCharacter::AslashCharacter()
 	CameraBoom->TargetArmLength = 300.f;
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(CameraBoom);
+
+	Hair = CreateDefaultSubobject<UGroomComponent>(TEXT("Hair"));
+	Hair->SetupAttachment(GetMesh());
+	Hair->AttachmentName = FString("head");
+
+	EyeBrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
+	EyeBrows->SetupAttachment(GetMesh());
+	EyeBrows->AttachmentName = FString("head");
 
 }
 
@@ -58,6 +67,8 @@ void AslashCharacter::Move(const FInputActionValue& Value)
 
 }
 
+
+
 void AslashCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
@@ -79,10 +90,16 @@ void AslashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AslashCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AslashCharacter::Look);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	}
 	//PlayerInputComponent->BindAxis(FName("MoveForward"), this, &AslashCharacter::MoveForward);
 
 
+}
+
+void AslashCharacter::Jump()
+{
+	Super::Jump();
 }
 
 //Enhanced Input으로 대체 예저ㅓㅇ
