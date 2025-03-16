@@ -22,7 +22,7 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	GEngine->AddOnScreenDebugMessage(1, 60.0f, FColor::Cyan, FString("Item OnScreen Message!"));
-	///Ç¥½Ã À§ÇÔ
+	///í‘œì‹œ ìœ„í•¨
 	////
 
 	//UWorld* World = GetWorld();
@@ -37,6 +37,7 @@ void AItem::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Avg of 1 and 3 : %d"), AvgInt);
 
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
+	Sphere->OnComponentEndOverlap.AddDynamic(this, &AItem::OnSphereEndOverlap);
 	
 }
 float AItem::TransformedSin()
@@ -55,6 +56,17 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
 	}
 }
+
+void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	const FString OtherActorName = OtherActor->GetName();
+	const FString ResultString = FString("End Overlap With ") + OtherActorName;
+	if (GEngine) {
+		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Blue, ResultString);
+	}
+}
+
+
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
