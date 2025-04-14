@@ -2,13 +2,13 @@
 
 
 #include "Characters/SlashAnimInstance.h"
-#include "Characters/slashCharacter.h"
+#include "Characters/SlashCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h" 
 void USlashAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	SlashCharacter = Cast<AslashCharacter>(TryGetPawnOwner());
+	SlashCharacter = Cast<ASlashCharacter>(TryGetPawnOwner());
 	if (SlashCharacter) {
 		SlashCharacterMovement = SlashCharacter->GetCharacterMovement();
 	}
@@ -22,7 +22,7 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	if (SlashCharacterMovement) {
 		
 		GroundSpeed = UKismetMathLibrary::VSizeXY(SlashCharacterMovement->Velocity);
-		// µð¹ö±× ¸Þ½ÃÁö Ãâ·Â (È­¸é¿¡ 2ÃÊ µ¿¾È Ç¥½Ã)
+		// ë””ë²„ê·¸ ë©”ì‹œì§€ ì¶œë ¥ (í™”ë©´ì— 2ì´ˆ ë™ì•ˆ í‘œì‹œ)
 
 		IsFalling = SlashCharacterMovement->IsFalling();
 	}

@@ -1,21 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Characters/slashCharacter.h"
+#include "Characters/SlashCharacter.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Items/Weapons/Weapon.h"
+#include "Items/Item.h"
 #include "GroomComponent.h"
 // Sets default values
-AslashCharacter::AslashCharacter()
+ASlashCharacter::ASlashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	//È¸Àü Á¦¾î °ü·Ã
-	//»óÇÏÀÔ·Â °ü·Ã Á¦¾î
+	//íšŒì „ ì œì–´ ê´€ë ¨
+	//ìƒí•˜ì…ë ¥ ê´€ë ¨ ì œì–´
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -40,7 +42,7 @@ AslashCharacter::AslashCharacter()
 }
 
 // Called when the game starts or when spawned
-void AslashCharacter::BeginPlay()
+void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -53,8 +55,8 @@ void AslashCharacter::BeginPlay()
 	}
 	
 }
-// direction ÀÌµ¿ ±¸Çö
-void AslashCharacter::Move(const FInputActionValue& Value)
+// direction ì´ë™ êµ¬í˜„
+void ASlashCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	const FRotator Roatation = Controller->GetControlRotation();
@@ -69,40 +71,49 @@ void AslashCharacter::Move(const FInputActionValue& Value)
 
 
 
-void AslashCharacter::Look(const FInputActionValue& Value)
+void ASlashCharacter::Look(const FInputActionValue& Value)
 {
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	AddControllerPitchInput(LookAxisVector.Y);
 	AddControllerYawInput(LookAxisVector.X);
 }
 
+void ASlashCharacter::EKeyPressed()
+{
+	AWeapon* OvelappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OvelappingWeapon) {
+		OvelappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
 // Called every frame
-void AslashCharacter::Tick(float DeltaTime)
+void ASlashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AslashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AslashCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AslashCharacter::Look);
+		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASlashCharacter::EKeyPressed);
 	}
 	//PlayerInputComponent->BindAxis(FName("MoveForward"), this, &AslashCharacter::MoveForward);
 
 
 }
 
-void AslashCharacter::Jump()
+void ASlashCharacter::Jump()
 {
 	Super::Jump();
 }
 
-//Enhanced InputÀ¸·Î ´ëÃ¼ ¿¹Àú¤Ã¤·
+//Enhanced Inputìœ¼ë¡œ ëŒ€ì²´ ì˜ˆì €ã…“ã…‡
 //void AslashCharacter::MoveForward(float Value) 
 //{
 //	if (Controller && (Value != 0.f)) {
@@ -119,4 +130,5 @@ void AslashCharacter::Jump()
 //}
 void Move(const FInputActionValue& Value)
 {
+
 }
