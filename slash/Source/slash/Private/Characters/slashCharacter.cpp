@@ -12,6 +12,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "Items/Item.h"
 #include "GroomComponent.h"
+#include "Components/BoxComponent.h"
 // Sets default values
 ASlashCharacter::ASlashCharacter()
 {
@@ -40,6 +41,13 @@ ASlashCharacter::ASlashCharacter()
 	EyeBrows->SetupAttachment(GetMesh());
 	EyeBrows->AttachmentName = FString("head");
 
+}
+
+void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
+{
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox()) {
+		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+	}
 }
 
 // Called when the game starts or when spawned
