@@ -44,9 +44,13 @@ protected:
 	UInputMappingContext* BirdMappingContext;
 
 	void Move(const FInputActionValue & Value);
+	void Look(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = Input)
 	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnyWhere, BlueprintReadOnly, Category = Input)
+	UInputAction* LookAction;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
